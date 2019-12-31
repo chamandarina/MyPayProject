@@ -13,30 +13,35 @@ import {
 import Select from "react-select";
 import Sortable from "react-sortablejs";
 
-import CustomSelectInput from "../components/common/CustomSelectInput";
+import CustomSelectInput from "../../components/common/CustomSelectInput";
 
-import { mapOrder } from "../helpers/Utils";
+import { mapOrder } from "../../helpers/Utils";
 
 const answerTypes = [
   { label: "Text Area", value: "1", id: 1 },
   { label: "Checkbox", value: "2", id: 2 },
   { label: "Radiobutton", value: "3", id: 3 }
 ];
-export default class SurveyQuestionBuilder extends React.Component {
+export default class AddressInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       collapse: this.props.expanded || false,
       mode: "edit-quesiton",
       id: this.props.id,
-      title: this.props.title || "",
-      question: this.props.question || "",
+
+      question: this.props.question || "", // delete
       answerType: this.props.answerType
         ? answerTypes.find(item => {
             return item.id === this.props.answerType;
           })
         : null,
-      answers: this.props.answers || []
+      answers: this.props.answers || [],
+
+      // name info values
+      address: this.props.address || "",
+      country: this.props.country || "",
+      postalCode: this.props.postalCode || "",
     };
   }
   deleteClick = () => {
@@ -146,9 +151,10 @@ export default class SurveyQuestionBuilder extends React.Component {
           <div className="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
             <div className="list-item-heading mb-0 truncate w-80 mb-1 mt-1">
               <span className="heading-number d-inline-block">
-                {this.props.order + 1}
+                {/* {this.props.order + 1} */}
+                2
               </span>
-              {this.state.title}
+              Address
             </div>
           </div>
           <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
@@ -193,28 +199,38 @@ export default class SurveyQuestionBuilder extends React.Component {
             <div className="edit-mode">
               <Form>
                 <FormGroup>
-                  <Label>Title</Label>
+                  <Label>Address</Label>
                   <Input
                     type="text"
-                    // value={this.state.title}
-                    // onChange={event => {
-                    //   this.setState({ title: event.target.value });
-                    // }}
+                    value={this.state.address}
+                    onChange={event => {
+                       this.setState({ address: event.target.value });
+                   }}
                     />
                 </FormGroup>
 
                 <FormGroup>
-                  <Label>Question</Label>
+                  <Label>Country</Label>
                   <Input
                     type="text"
-                    value={this.state.question}
+                    value={this.state.country}
                     onChange={event => {
-                      this.setState({ question: event.target.value });
+                      this.setState({ country: event.target.value });
                     }}/>
                 </FormGroup>
-                <div className="separator mb-4 mt-4" />
 
                 <FormGroup>
+                  <Label>Postal code</Label>
+                  <Input
+                    type="text"
+                    value={this.state.postalCode}
+                    onChange={event => {
+                      this.setState({ postalCode: event.target.value });
+                    }}/>
+                </FormGroup>
+
+                
+                {/* <FormGroup>
                   <Label>Answer Type</Label>
                   <Select
                     components={{ Input: CustomSelectInput }}
@@ -225,7 +241,7 @@ export default class SurveyQuestionBuilder extends React.Component {
                     onChange={this.typeChange}
                     options={answerTypes}/>
                 </FormGroup>
-                {this.state.answers.length > 0 && <Label>Answers</Label>}
+                {this.state.answers.length > 0 && <Label>Answers</Label>} */}
 
                 <Sortable
                   className="answers"

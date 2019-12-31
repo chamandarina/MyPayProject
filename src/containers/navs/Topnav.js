@@ -8,7 +8,7 @@ import {
   Input
 } from "reactstrap";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import IntlMessages from "../../helpers/IntlMessages";
@@ -33,6 +33,10 @@ import TopnavDarkSwitch from "./Topnav.DarkSwitch";
 
 import { getDirection, setDirection } from "../../helpers/Utils";
 import { AuthService } from "../../helpers/IdentityServer";
+
+const Gogo = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-gogo" */ '../../views/app/gogo')
+);
 
 class TopNav extends Component {
 authService
@@ -207,7 +211,7 @@ authService
   };
 
   render() {
-    const { containerClassnames, menuClickCount, locale } = this.props;
+    const { containerClassnames, menuClickCount, locale, match } = this.props;
     const { messages } = this.props.intl;
     return (
       <nav className="navbar fixed-top">
@@ -338,16 +342,26 @@ authService
                   {/* <img alt="Profile" src="/assets/img/profile-pic-l.jpg" /> */}
                 </span>
               </DropdownToggle>
+              <Switch>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem>Account</DropdownItem>
-                <DropdownItem>Features</DropdownItem>
-                <DropdownItem>History</DropdownItem>
-                <DropdownItem>Support</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem onClick={() => this.handleSignout()}>
-                  Sign out
-                </DropdownItem>
+               
+                  <DropdownItem 
+                    onClick={() =>
+                      <Route
+                        path={`http://localhost:3000/app/gogo`}
+                        render={props => <Gogo {...props} />}
+                      />
+                    }
+                  >Account</DropdownItem>
+                  <DropdownItem>Features</DropdownItem>
+                  <DropdownItem>History</DropdownItem>
+                  <DropdownItem>Support</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={() => this.handleSignout()}>
+                    Sign out
+                  </DropdownItem> 
               </DropdownMenu>
+              </Switch>
             </UncontrolledDropdown>
           </div>
         </div>

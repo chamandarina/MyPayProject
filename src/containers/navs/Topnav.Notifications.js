@@ -7,13 +7,13 @@ import notifications from "../../data/notifications";
 const NotificationItem = ({ img, title, date }) => {
   return (
     <div className="d-flex flex-row mb-3 pb-3 border-bottom">
-      <a href="/app/pages/details">
+      {/* <a href="/app/pages/details">
         <img
           src={img}
           alt={title}
           className="img-thumbnail list-thumbnail xsmall border-0 rounded-circle"
         />
-      </a>
+      </a> */}
       <div className="pl-3 pr-2">
         <a href="/app/pages/details">
           <p className="font-weight-medium mb-1">{title}</p>

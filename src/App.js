@@ -15,6 +15,7 @@ import { isMultiColorActive, isDemo } from './constants/defaultValues';
 import { getDirection } from './helpers/Utils';
 import { AuthService } from './helpers/IdentityServer';
 import { Callback } from './components/applications/Callback';
+import SurveyDetailApp from './components/applications/SurveyDetailApp';
 
 const ViewMain = React.lazy(() =>
   import(/* webpackChunkName: "views" */ './views')
@@ -118,6 +119,11 @@ class App extends Component {
                     path="/"
                     exact
                     render={props => <ViewMain {...props} />}
+                  />
+                  <Route
+                    path="/account-info"
+                    component={SurveyDetailApp}
+                    
                   />
                   <Redirect to="/error" />
                 </Switch>

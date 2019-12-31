@@ -31,6 +31,9 @@ import SurveyQuotas from "../../containers/SurveyQuotas";
 import SurveyCharts from "../../containers/SurveyCharts";
 import SurveyDetailApplicationMenu from "../../containers/SurveyDetailApplicationMenu";
 import SurveyDetailCard from "./SurveyDetailCard";
+import NameInfo from "../account_information/NameInfo";
+import ContactInfo from "../account_information/ContactInfo";
+import AddressInfo from "../account_information/AddressInfo";
 
 const surveyData = [];
 
@@ -103,7 +106,7 @@ class SurveyDetailApp extends Component {
             <h1>
               <i className="simple-icon-refresh heading-icon" />{" "}
               <span className="align-middle d-inline-block pt-1">
-                Developer Survey
+                Personal Information
               </span>
             </h1>
             {/* <div className="text-zero top-right-button-container">
@@ -147,7 +150,10 @@ class SurveyDetailApp extends Component {
 
                       <Colxx xxs="12" lg="8">
                         <ul className="list-unstyled mb-4">
-                          {survey.questions.map((item, index) => {
+                          <NameInfo/>
+                          <AddressInfo/>
+                          <ContactInfo/>
+                          {/* {survey.questions.map((item, index) => {
                             return (
                               <li data-id={item.id} key={item.id}>
                                 <QuestionBuilder
@@ -159,10 +165,10 @@ class SurveyDetailApp extends Component {
                                   }}/>
                               </li>
                             );
-                          })}
+                          })} */}
                         </ul>
 
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           <Button
                             outline
                             color="primary"
@@ -171,7 +177,8 @@ class SurveyDetailApp extends Component {
                             <i className="simple-icon-plus btn-group-icon" />{" "}
                             Add Question
                           </Button>
-                        </div>
+                        </div> */}
+
                       </Colxx>
                     </Row>
                   </TabPane>

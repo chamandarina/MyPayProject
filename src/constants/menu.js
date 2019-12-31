@@ -1,18 +1,26 @@
 const data = [
   {
-    id: "gogo",
-    icon: "iconsminds-air-balloon-1",
-    label: "menu.gogo",
+    // id: "gogo",
+    // icon: "iconsminds-air-balloon-1",
+    // label: "menu.gogo",
+    // to: "/app/gogo",
+    id: "user",
+    icon: "iconsminds-user",
+    label: "User",
     to: "/app/gogo",
-    // subs: [
-    //   {
-    //     icon: "simple-icon-paper-plane",
-    //     label: "menu.start",
-    //     to: "/app/gogo/start"
-    //   }     
-    // ]
+    //   subs: [
+    //    {
+    //      icon: "simple-icon-paper-plane",
+    //      label: "menu.start",
+    //      to: "/app/gogo/start"
+    //    }     
+    //  ]
   },
   {
+    // id: "secondmenu",
+    // icon: "iconsminds-three-arrow-fork",
+    // label: "menu.second-menu",
+    // to: "/app/second-menu",
     id: "secondmenu",
     icon: "iconsminds-three-arrow-fork",
     label: "menu.second-menu",

@@ -36,17 +36,50 @@ import { AuthService } from "../../helpers/IdentityServer";
 
 class TopNav extends Component {
 authService
-
+user
+promise
+shouldCancel
   constructor(props) {
     super(props);
 
     this.state = {
       isInFullScreen: false,
-      searchKeyword: ""
+      searchKeyword: "",
+      //user: {}
     };
 
+    this.shouldCancel = false;
     this.authService = new AuthService();
+  //   var something = async() => {
+  //     let result = await this.authService.getUser();
+  //     return result;
+  //  }
+
+  //  this.user = something.result;
+    //this.authService.getUser().then(res => {console.log(res, 'response'); this.user = res });
   }
+
+  // componentDidMount() {
+  //   this.getUser();
+  // }
+
+  // componentWillUnmount() {
+  //   this.shouldCancel = true;
+  // }
+
+  getUser = () => {
+    this.authService.getUser().then(user => {
+      if (user) {
+        console.log('User has been successfully loaded from store.');
+      } else {
+        console.log('You are not logged in.');
+      }
+
+      if (!this.shouldCancel) {
+        this.setState({ user });
+      }
+    });
+  };
 
   handleChangeLocale = (locale, direction) => {
     this.props.changeLocale(locale);
@@ -207,7 +240,8 @@ authService
   };
 
   render() {
-    const { containerClassnames, menuClickCount, locale } = this.props;
+    //if(!this.state.user) return null;
+    const { containerClassnames, menuClickCount, locale, user } = this.props;
     const { messages } = this.props.intl;
     return (
       <nav className="navbar fixed-top">
@@ -333,7 +367,7 @@ authService
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">Hello, Sarah Kortney</span>
+                <span className="name mr-1">Hello, {user ? user.profile.name : ''} </span>
                 <span>
                   {/* <img alt="Profile" src="/assets/img/profile-pic-l.jpg" /> */}
                 </span>
@@ -356,10 +390,12 @@ authService
   }
 }
 
-const mapStateToProps = ({ menu, settings }) => {
+const mapStateToProps = ({ authUser, menu, settings }) => {
   const { containerClassnames, menuClickCount, selectedMenuHasSubItems } = menu;
   const { locale } = settings;
+  const { user } = authUser;
   return {
+    user,
     containerClassnames,
     menuClickCount,
     selectedMenuHasSubItems,

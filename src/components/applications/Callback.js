@@ -12,15 +12,13 @@ class Callback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      user: null
-    }
+    
 
     this.authService = new AuthService();
   }
 
   componentDidMount() {
-    if (!this.state.user)
+    if (!this.props.user)
         this.authService.completeLogin().then((user) => {
         if (user) {
           this.props.setUser(user);
@@ -35,7 +33,6 @@ class Callback extends React.Component {
     if (!user) {
       return <Suspense fallback={<div className="loading" />}></Suspense>
     } else {
-      console.log(this.state.user, 'useric')
       return ( <Suspense fallback={<div className="loading" />}>  <Redirect to={{ pathname: '/' }} /> </Suspense> )
     }
   }

@@ -15,7 +15,7 @@ import { isMultiColorActive, isDemo } from './constants/defaultValues';
 import { getDirection } from './helpers/Utils';
 import { AuthService } from './helpers/IdentityServer';
 import  Callback  from './components/applications/Callback.js';
-import { AuthRoute } from './components/applications/AuthRoute';
+import AuthRoute from './components/applications/AuthRoute.js';
 import { auth } from 'firebase';
 
 const ViewMain = React.lazy(() =>
@@ -45,9 +45,9 @@ class App extends Component {
       document.body.classList.remove('rtl');
     }
 
-    // this.state = {
-    //   user: null
-    // }
+    this.state = {
+      stateUser: null
+    }
 
     this.authService = new AuthService();
     this.shouldCancel = false;
@@ -71,7 +71,7 @@ class App extends Component {
       }
 
       if (!this.shouldCancel) {
-        this.setState({ user });
+        this.setState({ stateUser: user });
       }
 
       
@@ -106,7 +106,7 @@ class App extends Component {
 
     const { locale, user } = this.props;
     const currentAppLocale = AppLocale[locale];
-
+ 
     return (
       <div className="h-100">
         <IntlProvider
@@ -121,7 +121,7 @@ class App extends Component {
                 <Switch>
                   <AuthRoute
                     path="/app"
-                    user={user}
+                    authUser={user}
                     component={ViewApp}
                   />
                   <Route

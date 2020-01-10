@@ -1,8 +1,9 @@
 import React, { Component, Suspense } from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { AuthService } from '../../helpers/IdentityServer';
 
-export class AuthRoute extends Component {
+class AuthRoute extends Component {
   authService
 
   constructor(props) {
@@ -19,12 +20,18 @@ export class AuthRoute extends Component {
   }
 
   render() {
-    const { component: Component, ...rest } = this.props;
-
-    if (!this.props.user) {
-      return <Suspense fallback={<div className="loading" />}></Suspense>
-    } else {
+    const { component: Component, user, ...rest } = this.props;
+    // if (!user) {
+    //   return <Suspense fallback={<div className="loading" />}></Suspense>
+    // } else {
       return ( <Route {...rest} render={props => ( <Component {...props} /> )} /> )
-    }
+    
   }
 }
+
+const mapStateToProps = ({ authUser }) => {
+  const { user } = authUser;
+  return { user };
+};
+
+export default connect(mapStateToProps)(AuthRoute);

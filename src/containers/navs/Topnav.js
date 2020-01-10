@@ -8,6 +8,8 @@ import {
   Input
 } from "reactstrap";
 
+import jwt from 'jsonwebtoken';
+
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -243,6 +245,8 @@ shouldCancel
     //if(!this.state.user) return null;
     const { containerClassnames, menuClickCount, locale, user } = this.props;
     const { messages } = this.props.intl;
+    const userProfile = jwt.decode(user.access_token)
+
     return (
       <nav className="navbar fixed-top">
         <div className="d-flex align-items-center navbar-left">
@@ -367,7 +371,7 @@ shouldCancel
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">Hello, {user ? user.profile.name : ''} </span>
+                <span className="name mr-1">Hello, {userProfile ? `${userProfile.given_name} ${userProfile.family_name}` : 'error'} </span>
                 <span>
                   {/* <img alt="Profile" src="/assets/img/profile-pic-l.jpg" /> */}
                 </span>

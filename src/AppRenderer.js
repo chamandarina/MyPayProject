@@ -2,12 +2,16 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import { configureStore } from './redux/store';
+import { loadState, saveState } from './redux/localStorage';
+
+const persistedState = loadState();
 
 const App = React.lazy(() => import(/* webpackChunkName: "App" */'./App' ));
 
 ReactDOM.render(
-  <Provider store={configureStore()}>
+  <Provider store={configureStore(persistedState)}>
     <Suspense fallback={<div className="loading" />}>
       <App />
     </Suspense>

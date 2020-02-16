@@ -11,6 +11,7 @@
     "classnames": "2.2.6",
     "firebase": "^7.4.0",
     "formik": "^1.5.1",
+    "jsonwebtoken": "^8.5.1",
     "moment": "2.22.2",
     "mousetrap": "^1.6.3",
     "oidc-client": "^1.10.1",

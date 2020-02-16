@@ -14,8 +14,11 @@ import NotificationContainer from './components/common/react-notifications/Notif
 import { isMultiColorActive, isDemo } from './constants/defaultValues';
 import { getDirection } from './helpers/Utils';
 import { AuthService } from './helpers/IdentityServer';
-import { Callback } from './components/applications/Callback';
+
 import SurveyDetailApp from './components/applications/SurveyDetailApp';
+import  Callback  from './components/applications/Callback.js';
+import AuthRoute from './components/applications/AuthRoute.js';
+import { auth } from 'firebase';
 
 const ViewMain = React.lazy(() =>
   import(/* webpackChunkName: "views" */ './views')
@@ -30,34 +33,9 @@ const ViewError = React.lazy(() =>
   import(/* webpackChunkName: "views-error" */ './views/error')
 );
 
-const AuthRoute = ({ component: Component, authUser, renderRedirect, ...rest }) => {
-  console.log(authUser, 'Useres')
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        authUser ? (
-          <Component {...props} />
-        ) : (
-          <div>
-          {renderRedirect()}
-          <button onClick={renderRedirect}>Redirasdasdaect</button>
-          </div> 
-          // <Redirect
-          //   to={{
-          //     pathname: '/user/login',
-          //     state: { from: props.location }
-          //   }}
-          // />
-        )
-      }
-    />
-  );
-}
-
 class App extends Component {
   authService
-  user
+  shouldCancel
   constructor(props) {
     super(props);
     const direction = getDirection();
@@ -69,21 +47,68 @@ class App extends Component {
       document.body.classList.remove('rtl');
     }
 
+    this.state = {
+      stateUser: null
+    }
+
     this.authService = new AuthService();
-    this.user = (async () => {
-      return await this.authService.getUser();
-  })
+    this.shouldCancel = false;
   }
 
-  getUser = async () => {
-    return await this.authService.getUser();
+  // componentDidMount() {
+  //   this.getUser();
+  // }
+
+  // componentWillUnmount() {
+  //   this.shouldCancel = true;
+  // }
+
+  getUser = () => {
+    this.authService.getUser().then(user => {
+      if (user) {
+        console.log('User has been successfully loaded from store.');
+        
+      } else {
+        console.log('You are not logged in.');
+      }
+
+      if (!this.shouldCancel) {
+        this.setState({ stateUser: user });
+      }
+
+      
+    });
+  };
+
+  login = () => {
+    return this.authService.login();
   }
+
+  completeLoginFunc = () => {
+    return this.authService.completeLogin();
+  }
+
+  // getUser = () => {
+  //   this.authService.getUser().then((res) => {
+  //     return res;
+  //   }).catch(() => {
+  //     return null;
+  //   });
+  // }
+
+  // getUser = async () => {
+  //   return await this.authService.getUser().then((user) => {
+  //     this.setState({ user: user })
+  //   });
+  // }
 
   render() {
-    const { locale, loginUser } = this.props;
-    const currentAppLocale = AppLocale[locale];
-    
 
+ 
+
+    const { locale, user } = this.props;
+    const currentAppLocale = AppLocale[locale];
+ 
     return (
       <div className="h-100">
         <IntlProvider
@@ -98,9 +123,8 @@ class App extends Component {
                 <Switch>
                   <AuthRoute
                     path="/app"
-                    authUser={this.user}
+                    authUser={user}
                     component={ViewApp}
-                    renderRedirect={this.authService.login()}
                   />
                   <Route
                     path="/callback"
@@ -137,9 +161,9 @@ class App extends Component {
 }
 
 const mapStateToProps = ({ authUser, settings }) => {
-  const { user: loginUser } = authUser;
+  const { user } = authUser;
   const { locale } = settings;
-  return { loginUser, locale };
+  return { user, locale };
 };
 const mapActionsToProps = {};
 

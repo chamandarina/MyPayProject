@@ -11,11 +11,12 @@ import {
     FORGOT_PASSWORD_ERROR,
     RESET_PASSWORD,
     RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_ERROR
+    RESET_PASSWORD_ERROR,
+    SET_USER
 } from '../actions';
 
 const INIT_STATE = {
-    user: localStorage.getItem('user_id'),
+    user: null,
     forgotUserMail: '',
     newPassword: '',
     resetPasswordCode: '',
@@ -25,6 +26,11 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
+        case SET_USER:
+            return { ...state, loading: false, user: action.payload, error: '' };
+
+
+
         case LOGIN_USER:
             return { ...state, loading: true, error: '' };
         case LOGIN_USER_SUCCESS:

@@ -1,4 +1,5 @@
 import {
+  SET_USER,
   LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
@@ -13,6 +14,13 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR
 } from '../actions';
+
+
+export const setUser = (user) => ({
+  type: SET_USER,
+  payload: user
+})
+
 
 export const loginUser = (user, history) => ({
   type: LOGIN_USER,

@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardBody, CardTitle } from "reactstrap";
 
-import { Colxx } from "../components/common/CustomBootstrap";
-import { ThemeColors } from "../helpers/ThemeColors";
-import { DoughnutChart } from "../components/charts";
+import { Colxx } from "../../components/common/CustomBootstrap";
+import { ThemeColors } from "../../helpers/ThemeColors";
+import { DoughnutChart } from "../../components/charts";
 
 const colors = ThemeColors();
 

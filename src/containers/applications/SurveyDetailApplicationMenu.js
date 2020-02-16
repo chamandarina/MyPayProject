@@ -3,7 +3,7 @@ import { Badge, FormGroup, CustomInput } from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { NavLink } from "react-router-dom";
 
-import ApplicationMenu from "../components/common/ApplicationMenu";
+import ApplicationMenu from "../../components/common/ApplicationMenu";
 
 const SurveyDetailApplicationMenu = () => {
   return (

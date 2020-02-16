@@ -345,14 +345,7 @@ authService
               <Switch>
               <DropdownMenu className="mt-3" right>
                
-                  <DropdownItem 
-                    onClick={() =>
-                      <Route
-                        path={`http://localhost:3000/app/gogo`}
-                        render={props => <Gogo {...props} />}
-                      />
-                    }
-                  >Account</DropdownItem>
+                  <DropdownItem><NavLink to="/app/gogo/start">Account</NavLink></DropdownItem>
                   <DropdownItem>Features</DropdownItem>
                   <DropdownItem>History</DropdownItem>
                   <DropdownItem>Support</DropdownItem>

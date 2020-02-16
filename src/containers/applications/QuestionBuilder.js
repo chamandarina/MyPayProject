@@ -13,9 +13,9 @@ import {
 import Select from "react-select";
 import Sortable from "react-sortablejs";
 
-import CustomSelectInput from "../components/common/CustomSelectInput";
+import CustomSelectInput from "../../components/common/CustomSelectInput";
 
-import { mapOrder } from "../helpers/Utils";
+import { mapOrder } from "../../helpers/Utils";
 
 const answerTypes = [
   { label: "Text Area", value: "1", id: 1 },

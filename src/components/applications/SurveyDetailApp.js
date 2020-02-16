@@ -20,16 +20,16 @@ import { mapOrder } from "../../helpers/Utils";
 import IntlMessages from "../../helpers/IntlMessages";
 import { Colxx } from "../common/CustomBootstrap";
 import Breadcrumb from "../../containers/navs/Breadcrumb";
-import QuestionBuilder from "../../containers/QuestionBuilder";
+import QuestionBuilder from "../../containers/applications/QuestionBuilder";
 
 import {
   getSurveyDetail,
   deleteSurveyQuestion,
   saveSurvey
 } from "../../redux/actions";
-import SurveyQuotas from "../../containers/SurveyQuotas";
-import SurveyCharts from "../../containers/SurveyCharts";
-import SurveyDetailApplicationMenu from "../../containers/SurveyDetailApplicationMenu";
+import SurveyQuotas from "../../containers/applications/SurveyQuotas";
+import SurveyCharts from "../../containers/applications/SurveyCharts";
+import SurveyDetailApplicationMenu from "../../containers/applications/SurveyDetailApplicationMenu";
 import SurveyDetailCard from "./SurveyDetailCard";
 import NameInfo from "../account_information/NameInfo";
 import ContactInfo from "../account_information/ContactInfo";

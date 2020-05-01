@@ -3,6 +3,8 @@ import {
   LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
   LOGIN_USER_ERROR,
@@ -79,4 +81,13 @@ export const registerUserError = (message) => ({
 export const logoutUser = (history) => ({
   type: LOGOUT_USER,
   payload: { history }
+});
+
+export const logoutUserSucess = () => ({
+  type: LOGOUT_USER_SUCCESS
+});
+
+export const logoutUserError = (message) => ({
+  type: LOGOUT_USER_ERROR,
+  payload: { message }
 });

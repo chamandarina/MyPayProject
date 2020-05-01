@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component, Suspense, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -18,7 +18,6 @@ import { AuthService } from './helpers/IdentityServer';
 import SurveyDetailApp from './components/applications/SurveyDetailApp';
 import  Callback  from './components/applications/Callback.js';
 import AuthRoute from './components/applications/AuthRoute.js';
-import { auth } from 'firebase';
 
 const ViewMain = React.lazy(() =>
   import(/* webpackChunkName: "views" */ './views')
@@ -35,7 +34,6 @@ const ViewError = React.lazy(() =>
 
 class App extends Component {
   authService
-  shouldCancel
   constructor(props) {
     super(props);
     const direction = getDirection();
@@ -47,66 +45,12 @@ class App extends Component {
       document.body.classList.remove('rtl');
     }
 
-    this.state = {
-      stateUser: null
-    }
-
-    this.authService = new AuthService();
-    this.shouldCancel = false;
+    this.authService = new AuthService(); 
   }
 
-  // componentDidMount() {
-  //   this.getUser();
-  // }
-
-  // componentWillUnmount() {
-  //   this.shouldCancel = true;
-  // }
-
-  getUser = () => {
-    this.authService.getUser().then(user => {
-      if (user) {
-        console.log('User has been successfully loaded from store.');
-        
-      } else {
-        console.log('You are not logged in.');
-      }
-
-      if (!this.shouldCancel) {
-        this.setState({ stateUser: user });
-      }
-
-      
-    });
-  };
-
-  login = () => {
-    return this.authService.login();
-  }
-
-  completeLoginFunc = () => {
-    return this.authService.completeLogin();
-  }
-
-  // getUser = () => {
-  //   this.authService.getUser().then((res) => {
-  //     return res;
-  //   }).catch(() => {
-  //     return null;
-  //   });
-  // }
-
-  // getUser = async () => {
-  //   return await this.authService.getUser().then((user) => {
-  //     this.setState({ user: user })
-  //   });
-  // }
 
   render() {
-
- 
-
-    const { locale, user } = this.props;
+    const { locale } = this.props;
     const currentAppLocale = AppLocale[locale];
  
     return (
@@ -123,7 +67,6 @@ class App extends Component {
                 <Switch>
                   <AuthRoute
                     path="/app"
-                    authUser={user}
                     component={ViewApp}
                   />
                   <Route
@@ -160,10 +103,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ authUser, settings }) => {
-  const { user } = authUser;
+const mapStateToProps = ({ settings }) => {
   const { locale } = settings;
-  return { user, locale };
+  return { locale };
 };
 const mapActionsToProps = {};
 

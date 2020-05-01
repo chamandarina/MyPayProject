@@ -10,6 +10,8 @@ export const REGISTER_USER = "REGISTER_USER";
 export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
 export const REGISTER_USER_ERROR = "REGISTER_USER_ERROR";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const LOGOUT_USER_SUCCESS = "LOGOUT_USER_SUCCESS";
+export const LOGOUT_USER_ERROR = "LOGOUT_USER_ERROR";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
 export const FORGOT_PASSWORD_ERROR = "FORGOT_PASSWORD_ERROR";
@@ -47,8 +49,14 @@ export const SURVEY_GET_DETAILS_ERROR = "SURVEY_GET_DETAILS_ERROR";
 export const SURVEY_DELETE_QUESTION = "SURVEY_DELETE_QUESTION";
 export const SURVEY_SAVE = "SURVEY_SAVE";
 
+/* PAYMENT */
+export const EXECUTE_PAYMENT = "EXECUTE_PAYMENT";
+export const EXECUTE_PAYMENT_SUCCESS = "EXECUTE_PAYMENT_SUCCESS";
+export const EXECUTE_PAYMENT_ERROR = "EXECUTE_PAYMENT_ERROR";
+
 export * from "./menu/actions";
 export * from "./settings/actions";
 export * from "./auth/actions";
 export * from "./surveyList/actions";
 export * from "./surveyDetail/actions";
+export * from "./payment/actions";

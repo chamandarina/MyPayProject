@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { injectIntl } from "react-intl";
 import {
   UncontrolledDropdown,
@@ -42,6 +42,23 @@ const Gogo = React.lazy(() =>
   import(/* webpackChunkName: "viwes-gogo" */ '../../views/app/gogo')
 );
 
+function Span() {
+  const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    console.log('update user')
+    const authService = new AuthService();
+    authService.getUser().then(user => {
+      if (user) {
+        setUserProfile(jwt.decode(user.access_token));
+      }
+    })
+  }, []);
+
+  return <span className="name mr-1">Hello, {userProfile ? `${userProfile.given_name} ${userProfile.family_name}` : ''} </span>
+}
+
 class TopNav extends Component {
 authService
 user
@@ -71,8 +88,12 @@ shouldCancel
   //   this.getUser();
   // }
 
-  // componentWillUnmount() {
-  //   this.shouldCancel = true;
+  // componentWillMount() {
+  //   this.getCurrentUser();
+  // }
+
+  // async getCurrentUser() {
+  //   this.user = await this.authService.getUser();
   // }
 
   getUser = () => {
@@ -144,7 +165,7 @@ shouldCancel
   };
 
   handleSignout = () => {
-    this.authService.logout();
+    this.handleLogout();
   }
 
   handleDocumentClickSearch = e => {
@@ -253,7 +274,8 @@ shouldCancel
     //if(!this.state.user) return null;
     const { containerClassnames, menuClickCount, locale, user } = this.props;
     const { messages } = this.props.intl;
-    const userProfile = jwt.decode(user.access_token)
+
+    // const userProfile = this.user ? jwt.decode(this.user.access_token) : null;
 
     return (
       <nav className="navbar fixed-top">
@@ -379,14 +401,14 @@ shouldCancel
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">Hello, {userProfile ? `${userProfile.given_name} ${userProfile.family_name}` : 'error'} </span>
+                <Span />
+                {/* <span className="name mr-1">Hello, {userProfile ? `${userProfile.given_name} ${userProfile.family_name}` : ''} </span> */}
                 <span>
                   {/* <img alt="Profile" src="/assets/img/profile-pic-l.jpg" /> */}
                 </span>
               </DropdownToggle>
               <Switch>
               <DropdownMenu className="mt-3" right>
-               
                   <DropdownItem><NavLink to="/app/gogo/start">Account</NavLink></DropdownItem>
                   <DropdownItem>Features</DropdownItem>
                   <DropdownItem>History</DropdownItem>

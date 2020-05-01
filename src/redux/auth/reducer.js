@@ -12,7 +12,9 @@ import {
     RESET_PASSWORD,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_ERROR,
-    SET_USER
+    SET_USER,
+    LOGOUT_USER_SUCCESS,
+    LOGOUT_USER_ERROR
 } from '../actions';
 
 const INIT_STATE = {
@@ -28,8 +30,6 @@ export default (state = INIT_STATE, action) => {
     switch (action.type) {
         case SET_USER:
             return { ...state, loading: false, user: action.payload, error: '' };
-
-
 
         case LOGIN_USER:
             return { ...state, loading: true, error: '' };
@@ -56,7 +56,11 @@ export default (state = INIT_STATE, action) => {
         case REGISTER_USER_ERROR:
             return { ...state, loading: false, user: '', error: action.payload.message };
         case LOGOUT_USER:
-            return { ...state, user: null, error: '' };
+            return { ...state, loading: true, error: '' };
+        case LOGOUT_USER_SUCCESS:
+            return { ...state, loading: false,  user: null, error: '' };
+        case LOGOUT_USER_ERROR:
+            return { ...state, loading: true, error: action.payload.message };
         default: return { ...state };
     }
 }

@@ -17,20 +17,18 @@ export function configureStore(initialState) {
         compose(applyMiddleware(...middlewares))
     );
 
-    store.subscribe(() => {
-        saveState({
-          authUser: store.getState().authUser
-        });
-      });
-
     sagaMiddleware.run(sagas);
 
-    if (module.hot) {
-        module.hot.accept('./reducers', () => {
-            const nextRootReducer = require('./reducers');
-            store.replaceReducer(nextRootReducer);
-        });
-    }
+    // store.subscribe(() => {
+    //     saveState(store.getState());
+    //   });
+
+    // if (module.hot) {
+    //     module.hot.accept('./reducers', () => {
+    //         const nextRootReducer = require('./reducers');
+    //         store.replaceReducer(nextRootReducer);
+    //     });
+    // }
 
     return store;
 }

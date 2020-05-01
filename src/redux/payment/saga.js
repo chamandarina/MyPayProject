@@ -1,10 +1,11 @@
 
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 import { auth } from '../../helpers/Firebase';
 import {AuthService} from '../../helpers/IdentityServer.js';
 import {
+    EXECUTE_PAYMENT,
     LOGIN_USER,
     REGISTER_USER,
     LOGOUT_USER,
@@ -13,6 +14,8 @@ import {
 } from '../actions';
 
 import {
+    executePaymentSuccess,
+    executePaymentError,
     loginUserSuccess,
     loginUserError,
     registerUserSuccess,
@@ -22,8 +25,40 @@ import {
     resetPasswordSuccess,
     resetPasswordError,
     logoutUserSucess,
-    logoutUserError
+    logoutUserError,
+    executePayment
 } from './actions';
+import { PaymentService } from '../../services/PaymentService';
+
+
+export function* watchExecutePayment() {
+    yield takeLatest(EXECUTE_PAYMENT, executePayment);
+}
+
+const startExecutingPayment = async (payment) => {
+    const paymentService = new PaymentService();
+    await paymentService.executePayment(payment)
+        .then(payment => payment)
+        .catch(error => error);;
+}
+
+function* executePayment({ payment }) {
+    const { username, password } = payload.user;
+    const { history } = payload;
+    try {
+        const payment = yield call(startExecutingPayment, payment);
+        if (!payment.message) {
+            yield put(executePaymentSuccess(payment));
+            //history.push('/');
+        } else {
+            yield put(executePaymentError(payment.message));
+        }
+    } catch (error) {
+        yield put(executePaymentError(error));
+    }
+}
+
+
 
 
 export function* watchLoginUser() {

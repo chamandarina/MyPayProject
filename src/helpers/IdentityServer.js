@@ -7,10 +7,11 @@ import axios from 'axios';
 export class AuthService {
   userManager
   user
+  currentUser = null
 
   constructor() {
     const settings = {
-      userStore: new WebStorageStateStore({ store: window.localStorage }),
+      userStore: new WebStorageStateStore({ store: localStorage }),
       authority: identityServerConfig.stsAuthority,
       //require_https_metadata: false,
       client_id: identityServerConfig.clientId,
@@ -35,6 +36,14 @@ export class AuthService {
 
     this.userManager = new UserManager(settings);
 
+    this.userManager.events.addUserLoaded(user => {
+      this.currentUser = user;
+    });
+
+    this.userManager.events.addUserUnloaded(() => {
+      this.currentUser = null
+    });
+
     Log.logger = console;
     Log.level = Log.INFO;
   }
@@ -43,9 +52,17 @@ getUser() {
   return this.userManager.getUser()
   }
 
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
 
 setUser(user) {
   this.userManager.storeUser(user);
+}
+
+isUserLoggedIn() {
+  return this.user;
 }
 
   async signin() {
@@ -101,6 +118,7 @@ setUser(user) {
   };
 
   completeLogin = async () => {
+    this.user = true;
     return await this.userManager.signinRedirectCallback();
   }
 
@@ -109,6 +127,7 @@ setUser(user) {
   }
 
   logout() {
+    this.user = false;
     return this.userManager.signoutRedirect({post_logout_redirect_uri: "http://localhost:3000"});
   }
 }

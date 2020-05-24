@@ -140,7 +140,7 @@ export const scatterChartOptions = {
   tooltips: chartTooltip
 }
 
-export const barChartOptions = {
+export const barChartOptions1 = {
   legend: {
     position: 'bottom',
     labels: {
@@ -163,8 +163,48 @@ export const barChartOptions = {
         ticks: {
           beginAtZero: true,
           stepSize: 100,
-          min: 300,
-          max: 800,
+          min: 0,
+          max: 1000,
+          padding: 20
+        }
+      }
+    ],
+    xAxes: [
+      {
+        gridLines: {
+          display: false
+        }
+      }
+    ]
+  },
+  tooltips: chartTooltip
+}
+
+export const barChartOptions2 = {
+  legend: {
+    position: 'bottom',
+    labels: {
+      padding: 30,
+      usePointStyle: true,
+      fontSize: 12
+    }
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    yAxes: [
+      {
+        gridLines: {
+          display: true,
+          lineWidth: 1,
+          color: 'rgba(0,0,0,0.1)',
+          drawBorder: false
+        },
+        ticks: {
+          beginAtZero: true,
+          stepSize: 1000,
+          min: 0,
+          max: 10000,
           padding: 20
         }
       }

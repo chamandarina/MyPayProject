@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState, useEffect  } from "react";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-
+import { connect } from 'react-redux';
+import {
+  resetNotificationCount }
+from '../../redux/reporting/actions';
+ 
 import notifications from "../../data/notifications";
+import { array } from "yup";
 
 const NotificationItem = ({ img, title, date }) => {
   return (
@@ -24,16 +29,42 @@ const NotificationItem = ({ img, title, date }) => {
   );
 };
 
-const TopnavNotifications = () => {
+const TopnavNotifications = ({ data, notificationCount, resetNotificationCount }) => {
+  const [count, setCount] = useState(0);
+  const [length, setLength] = useState(0);
+
+  useEffect(() => {
+    if (data && length == 0) {
+      let count = data.length;
+      setLength(count);
+    }
+
+    if (data && length > 0) {
+      let count = data.length - length;
+      setCount(count);
+    }
+  }, []);
+
+  function onClickHandler(e) {
+    resetNotificationCount();
+  }
+
   return (
     <div className="position-relative d-inline-block">
       <UncontrolledDropdown className="dropdown-menu-right">
         <DropdownToggle
           className="header-icon notificationButton"
           color="empty"
+          onClick={onClickHandler}
         >
-          <i className="simple-icon-bell" />
-          <span className="count">3</span>
+          {
+            notificationCount > 0 ? (
+            <div>
+            <i className="simple-icon-bell" />
+            <span className="count">{notificationCount}</span> </div> ) :
+            (<div><i className="simple-icon-bell" />
+            </div>)
+          }
         </DropdownToggle>
         <DropdownMenu
           className="position-absolute mt-3 scroll"
@@ -43,7 +74,7 @@ const TopnavNotifications = () => {
           <PerfectScrollbar
             options={{ suppressScrollX: true, wheelPropagation: false }}
           >
-            {notifications.map((notification, index) => {
+            {data?.map((notification, index) => {
               return <NotificationItem key={index} {...notification} />;
             })}
           </PerfectScrollbar>
@@ -53,4 +84,11 @@ const TopnavNotifications = () => {
   );
 };
 
-export default TopnavNotifications;
+const mapStateToProps = state => ({
+  notifications: state.notifications,
+});
+
+const mapActionsToProps = { resetNotificationCount };
+
+export default connect(mapStateToProps, mapActionsToProps)(TopnavNotifications);
+

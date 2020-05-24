@@ -49,7 +49,7 @@ export default class SmallLine extends React.Component {
   }
 
   changeState(yLabel, xLabel) {
-    this.setState({ currentValue: yLabel, currentLabel: xLabel });
+    this.setState({ currentValue: '1315$', currentLabel: "Current state for transactions" });
   }
 
   render() {

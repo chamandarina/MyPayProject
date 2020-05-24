@@ -54,9 +54,26 @@ export const EXECUTE_PAYMENT = "EXECUTE_PAYMENT";
 export const EXECUTE_PAYMENT_SUCCESS = "EXECUTE_PAYMENT_SUCCESS";
 export const EXECUTE_PAYMENT_ERROR = "EXECUTE_PAYMENT_ERROR";
 
+/* LOAN */
+export const EXECUTE_LOAN = "EXECUTE_LOAN"; 
+export const EXECUTE_LOAN_SUCCESS = "EXECUTE_LOAN_SUCCESS"; 
+export const EXECUTE_LOAN_ERROR = "EXECUTE_LOAN_ERROR"; 
+
+/* NOTIFICATION */
+export const SEND_NOTIFICATION = "SEND_NOTIFICATION";
+export const SEND_NOTIFICATION_SUCCESS = "SEND_NOTIFICATION_SUCCESS";
+export const SEND_NOTIFICATION_ERROR = "SEND_NOTIFICATION_ERROR";
+export const NOTIFICATION_RESET = "NOTIFICATION_RESET";
+
+/* CUSTOMER */
+export const FETCH_CUSTOMER = "FETCH_CUSTOMER";
+export const FETCH_CUSTOMER_SUCCESS = "FETCH_CUSTOMER_SUCCESS";
+export const FETCH_CUSTOMER_ERROR = "FETCH_CUSTOMER_ERROR";
+
+
 export * from "./menu/actions";
 export * from "./settings/actions";
 export * from "./auth/actions";
 export * from "./surveyList/actions";
 export * from "./surveyDetail/actions";
-export * from "./payment/actions";
+export * from "./reporting/actions";

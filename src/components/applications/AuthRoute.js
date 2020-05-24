@@ -2,6 +2,8 @@ import React, { Component, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AuthService } from '../../helpers/IdentityServer';
+import { fetchCustomer } from '../../redux/reporting/actions';
+import jwt from 'jsonwebtoken';
 
 class AuthRoute extends Component {
   authService
@@ -29,8 +31,11 @@ class AuthRoute extends Component {
   render() {
     const { component: Component, ...rest } = this.props;
     const authUser = this.state.currentUser == null ? this.authService.getCurrentUser() : this.state.currentUser;
-    console.log(authUser, 'yeah mada faka')
     if (authUser) {
+      const user = jwt.decode(authUser.access_token);
+      if (!this.props.customer) {
+        this.props.fetchCustomer(user.sub);
+      }
       return ( <Route {...rest} render={props => ( <Component {...props} /> )} /> )
     } else {
       return <div className="loading"></div>;
@@ -38,4 +43,9 @@ class AuthRoute extends Component {
   }
 }
 
-export default AuthRoute;
+const mapStateToProps = (state) => {
+  const { customer } = state.reporting;
+  return { customer };
+};
+
+export default connect(mapStateToProps, { fetchCustomer })(AuthRoute);

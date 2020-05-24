@@ -23,12 +23,12 @@ export function configureStore(initialState) {
     //     saveState(store.getState());
     //   });
 
-    // if (module.hot) {
-    //     module.hot.accept('./reducers', () => {
-    //         const nextRootReducer = require('./reducers');
-    //         store.replaceReducer(nextRootReducer);
-    //     });
-    // }
+    if (module.hot) {
+        module.hot.accept('./reducers', () => {
+            const nextRootReducer = require('./reducers');
+            store.replaceReducer(nextRootReducer);
+        });
+    }
 
     return store;
 }

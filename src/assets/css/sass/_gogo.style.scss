@@ -2136,7 +2136,7 @@ button {
 
         &.active:after {
           content: " ";
-          background: $theme-color-1;
+          //background: $theme-color-1;
           border-radius: 10px;
           position: absolute;
           width: 4px;

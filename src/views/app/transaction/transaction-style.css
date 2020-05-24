@@ -1,0 +1,8 @@
+.col-centered{
+  margin: 0 auto;
+  float: none;
+}
+
+.form-control-wizard-input {
+  width: 550px !important
+}

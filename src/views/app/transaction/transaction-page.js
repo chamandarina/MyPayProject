@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Card, CardBody, FormGroup, Label, Spinner } from "reactstrap";
+import { Card, CardBody, FormGroup, Label, Spinner, InputGroup,
+    InputGroupAddon,
+    Input,
+    InputGroupText } from "reactstrap";
 import IntlMessages from "../../../helpers/IntlMessages";
 import { Wizard, Steps, Step } from 'react-albus';
 import { injectIntl } from 'react-intl';
@@ -7,17 +10,28 @@ import { connect } from 'react-redux';
 import { BottomNavigation } from "../../../components/wizard/BottomNavigation";
 import { TopNavigation } from "../../../components/wizard/TopNavigation";
 import { Formik, Form, Field } from "formik";
-import PaymentService from '../../../services';
+import { NotificationService } from '../../../services/NotificationService';
 import './transaction-style.css';
 import {
-    executePayment
-  } from "../../redux/payment/actions";
+     executePayment }
+   from '../../../redux/reporting/actions';
 
+   class PaymentRequest {
+    portfolioId
+    bankAccountNumber
+    receiver
+    paymentCode
+    amount = 0
+    paymentPurpose
+    referenceNumber
+   }
 
 class Validation extends Component {
-    paymentService;
+    notificationService = null
+
     constructor(props) {
         super(props);
+        this.notificationService = new NotificationService();
         this.onClickNext = this.onClickNext.bind(this);
         this.onClickPrev = this.onClickPrev.bind(this);
         this.validateAmount = this.validateAmount.bind(this);
@@ -25,10 +39,10 @@ class Validation extends Component {
         this.validateReceiver = this.validateReceiver.bind(this);
         this.validatePaymentCode = this.validatePaymentCode.bind(this);
         this.validatePaymentPurpose = this.validatePaymentPurpose.bind(this);
+        this.sendNotification = this.sendNotification.bind(this);
 
         this.form0 = React.createRef();
         this.form1 = React.createRef();
-        this.paymentService = new PaymentService();
         //this.form2 = React.createRef();
 
         this.state = {
@@ -38,12 +52,17 @@ class Validation extends Component {
             fields: [
                 {
                     valid: false,
+                    name: "receiver",
+                    value: ""
+                },
+                {
+                    valid: false,
                     name: "bankAccountNumber",
                     value: ""
                 },
                 {
                     valid: false,
-                    name: "receiver",
+                    name: "referenceNumber",
                     value: ""
                 },
                 {
@@ -69,9 +88,10 @@ class Validation extends Component {
         this.setState({ fields: [
             { ...this.state.fields[0], form: this.form0 }, 
             { ...this.state.fields[1], form: this.form0 }, 
-            { ...this.state.fields[2], form: this.form1 }, 
+            { ...this.state.fields[2], form: this.form0 }, 
             { ...this.state.fields[3], form: this.form1 }, 
             { ...this.state.fields[4], form: this.form1 }, 
+            { ...this.state.fields[5], form: this.form0 }, 
         ] });
     }
 
@@ -122,6 +142,8 @@ class Validation extends Component {
             error = "Please enter your amount";
         } else if (value == 0) {
             error = "Amount must be grather than zero";
+        } else if (value > 200) {
+            error = "Amount must be less than 200$";
         }
         return error;
     }
@@ -131,16 +153,23 @@ class Validation extends Component {
     }
 
     asyncLoading () {
-        const payment = {
-            portfolioId: 1, 
-            bankAccountNumber: this.state.fields.find(x => x.name == 'bankAccountNumber').value,
-            receiver: this.state.fields.find(x => x.name == 'receiver').value,
-            paymentCode: this.state.fields.find(x => x.name == 'paymentCode').value,
-            amount: this.state.fields.find(x => x.name == 'amount').value,
-            paymentPurpose: this.state.fields.find(x => x.name == 'paymentPurpose').value,
-        };
-
+        this.setState({ loading: true });
+        const payment = new PaymentRequest();
+        payment.portfolioId = this.props.customer.portfolioId;
+        payment.bankAccountNumber = this.state.fields.find(x => x.name == 'bankAccountNumber').value;
+        payment.receiver = this.state.fields.find(x => x.name == 'receiver').value;
+        payment.paymentCode = this.state.fields.find(x => x.name == 'paymentCode').value;
+        payment.amount = this.state.fields.find(x => x.name == 'amount').value;
+        payment.paymentPurpose = this.state.fields.find(x => x.name == 'paymentPurpose').value;
+        payment.referenceNumber = this.state.fields.find(x => x.name == 'referenceNumber').value;
+        
         this.props.executePayment(payment);
+    }
+
+    sendNotification () {
+        const phoneNumber = this.props.customer.phoneNumber;
+        this.notificationService.sendNotificationOnPaymentExecuted(phoneNumber);
+        this.setState({ loading: false });
     }
 
     onClickNext(goToNext, steps, step) {
@@ -153,8 +182,6 @@ class Validation extends Component {
         form.submitForm().then(() => {
             let fields = this.state.fields;
             let isValid = formIndex;
-            console.log(formIndex, 'index')
-            console.log(formIndex+step.length, 'length')
             for(let i = formIndex; i < formIndex+step.length; i++) {
                 let name = this.state.fields[i].name;
                 fields[i].value = form.state.values[name];
@@ -170,6 +197,7 @@ class Validation extends Component {
                 if (steps.length - 2 <= steps.indexOf(step)) {
                     this.hideNavigation();
                     this.asyncLoading();
+                    this.sendNotification();
                 }
             }
         });
@@ -190,21 +218,37 @@ class Validation extends Component {
                     <Wizard>
                         <TopNavigation className="justify-content-center" disableNav={true} />
                         <Steps>
-                            <Step id="step1" currentIndex={0} length={2} name={messages["wizard.step-name-1"]} desc={messages["wizard.step-desc-1"]}>
+                            <Step id="step1" currentIndex={0} length={3} name={messages["wizard.step-name-1"]} desc={messages["wizard.step-desc-1"]}>
                                 <div className="wizard-basic-step row">
                                     <Formik
                                         ref={this.form0}
                                         initialValues={{
-                                            bankAccountNumber: this.state.fields[0].value,
-                                            receiver: this.state.fields[1].value,
+                                            receiver: this.state.fields[0].value,
+                                            bankAccountNumber: this.state.fields[1].value,
+                                            referenceNumber: this.state.fields[2].value,
                                         }}
                                         onSubmit={() => { }}>
                                         {({ errors, touched }) => (
                                             <Form className="av-tooltip tooltip-label-right col-centered">
                                                 <FormGroup>
+                                                    <Label>{messages["transaction.receiver"]}</Label>
+                                                    <Field
+                                                        className="form-control form-control-wizard-input"
+                                                        placeholder="Enter who will receive payment"
+                                                        name="receiver"
+                                                        validate={this.validateReceiver}
+                                                    />
+                                                    {errors.receiver && touched.receiver && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {errors.receiver}
+                                                        </div>
+                                                    )}
+                                                </FormGroup>
+                                                <FormGroup>
                                                     <Label>{messages["transaction.bank-account-number"]}</Label>
                                                     <Field
                                                         className="form-control form-control-wizard-input"
+                                                        placeholder="Enter bank account number"
                                                         name="bankAccountNumber"
                                                         validate={this.validateBankAccountNumber}
                                                     />
@@ -215,31 +259,26 @@ class Validation extends Component {
                                                     )}
                                                 </FormGroup>
                                                 <FormGroup>
-                                                    <Label>{messages["transaction.receiver"]}</Label>
+                                                    <Label>{messages["transaction.reference-number"]}</Label>
                                                     <Field
                                                         className="form-control form-control-wizard-input"
-                                                        name="receiver"
-                                                        validate={this.validateReceiver}
+                                                        placeholder="Enter reference number (optional)"
+                                                        name="referenceNumber"
                                                     />
-                                                    {errors.receiver && touched.receiver && (
-                                                        <div className="invalid-feedback d-block">
-                                                            {errors.receiver}
-                                                        </div>
-                                                    )}
                                                 </FormGroup>
                                             </Form>
                                         )}
                                     </Formik>
                                 </div>
                             </Step>
-                            <Step id="step2" currentIndex={2} length={3} name={messages["wizard.step-name-2"]} desc={messages["wizard.step-desc-2"]}>
+                            <Step id="step2" currentIndex={3} length={3} name={messages["wizard.step-name-2"]} desc={messages["wizard.step-desc-2"]}>
                                 <div className="wizard-basic-step row">
                                     <Formik
                                         ref={this.form1}
                                         initialValues={{
-                                            paymentCode: this.state.fields[2].value,
-                                            amount: this.state.fields[3].value,
-                                            paymentPurpose: this.state.fields[4].value
+                                            paymentCode: this.state.fields[3].value,
+                                            amount: this.state.fields[4].value,
+                                            paymentPurpose: this.state.fields[5].value
                                         }}
                                         onSubmit={() => { }}>
                                         {({ errors, touched }) => (
@@ -248,6 +287,7 @@ class Validation extends Component {
                                                     <Label>{messages["transaction.payment-code"]}</Label>
                                                     <Field
                                                         className="form-control form-control-wizard-input"
+                                                        placeholder="Enter payment code"
                                                         name="paymentCode"
                                                         validate={this.validatePaymentCode}
                                                     />
@@ -259,11 +299,19 @@ class Validation extends Component {
                                                 </FormGroup>
                                                 <FormGroup>
                                                     <Label>{messages["transaction.amount"]}</Label>
-                                                    <Field
-                                                        className="form-control form-control-wizard-input"
-                                                        name="amount"
-                                                        validate={this.validateAmount}
-                                                    />
+                                                    <Field name="amount">
+                                                        {({ field, form }) => (
+                                                          <InputGroup className="mb-3">
+                                                            <Input {...field} type="number"
+                                                                placeholder="Enter amount in dollars"
+                                                                className="form-control form-control-wizard-input"
+                                                                validate={this.validateAmount} />
+                                                            <InputGroupAddon addonType="prepend">
+                                                              <InputGroupText>$</InputGroupText>
+                                                            </InputGroupAddon>
+                                                          </InputGroup>  
+                                                        )}
+                                                    </Field>
                                                     {errors.amount && touched.amount && (
                                                         <div className="invalid-feedback d-block">
                                                             {errors.amount}
@@ -274,6 +322,7 @@ class Validation extends Component {
                                                     <Label>{messages["transaction.payment-purpose"]}</Label>
                                                     <Field
                                                         className="form-control form-control-wizard-input"
+                                                        placeholder="Enter payment purpose"
                                                         name="paymentPurpose"
                                                         validate={this.validatePaymentPurpose}
                                                     />
@@ -313,4 +362,10 @@ class Validation extends Component {
         );
     }
 }
-export default connect(null, { executePayment })(injectIntl(Validation))
+
+const mapStateToProps = ({ reporting }) => {
+    const { customer } = reporting;
+    return { customer };
+  };
+
+export default connect(mapStateToProps, { executePayment })(injectIntl(Validation))

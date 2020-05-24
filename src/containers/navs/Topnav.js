@@ -272,7 +272,7 @@ shouldCancel
 
 
     //if(!this.state.user) return null;
-    const { containerClassnames, menuClickCount, locale, user } = this.props;
+    const { containerClassnames, menuClickCount, locale, user, notifications, notificationCount } = this.props;
     const { messages } = this.props.intl;
 
     // const userProfile = this.user ? jwt.decode(this.user.access_token) : null;
@@ -358,7 +358,7 @@ shouldCancel
           {/* {isDarkSwitchActive && <TopnavDarkSwitch />} */}
 
           <div className="header-icons d-inline-block align-middle">
-          <div className="d-inline-block">
+          {/* <div className="d-inline-block">
             <UncontrolledDropdown className="ml-2">
                 <DropdownToggle
                   caret
@@ -381,10 +381,10 @@ shouldCancel
                   })}
                 </DropdownMenu>
               </UncontrolledDropdown>
-            </div>
+            </div> */}
 
             {/* <TopnavEasyAccess /> */}
-            <TopnavNotifications /> 
+            <TopnavNotifications data={notifications} notificationCount={notificationCount} /> 
             {/* <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
@@ -409,10 +409,8 @@ shouldCancel
               </DropdownToggle>
               <Switch>
               <DropdownMenu className="mt-3" right>
-                  <DropdownItem><NavLink to="/app/gogo/start">Account</NavLink></DropdownItem>
-                  <DropdownItem>Features</DropdownItem>
-                  <DropdownItem>History</DropdownItem>
-                  <DropdownItem>Support</DropdownItem>
+                  <DropdownItem><NavLink to="/app/account/account">Account</NavLink></DropdownItem>
+                  <DropdownItem><NavLink to="/app/support/support">Support</NavLink></DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={() => this.handleSignout()}>
                     Sign out
@@ -427,16 +425,19 @@ shouldCancel
   }
 }
 
-const mapStateToProps = ({ authUser, menu, settings }) => {
+const mapStateToProps = ({ authUser, menu, settings, reporting }) => {
   const { containerClassnames, menuClickCount, selectedMenuHasSubItems } = menu;
   const { locale } = settings;
   const { user } = authUser;
+  const { notifications, notificationCount } = reporting;
   return {
     user,
     containerClassnames,
     menuClickCount,
     selectedMenuHasSubItems,
-    locale
+    locale,
+    notifications, 
+    notificationCount
   };
 };
 export default injectIntl(

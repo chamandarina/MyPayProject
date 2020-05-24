@@ -4,6 +4,7 @@ import menu from './menu/reducer';
 import authUser from './auth/reducer';
 import surveyListApp from './surveyList/reducer';
 import surveyDetailApp from './surveyDetail/reducer';
+import reporting from './reporting/reducer';
 
 
 const reducers = combineReducers({
@@ -11,7 +12,8 @@ const reducers = combineReducers({
   settings,
   authUser,
   surveyListApp,
-  surveyDetailApp
+  surveyDetailApp,
+  reporting,
 });
 
 export default reducers;

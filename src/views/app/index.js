@@ -7,12 +7,29 @@ import AppLayout from '../../layout/AppLayout';
 const Gogo = React.lazy(() =>
   import(/* webpackChunkName: "viwes-gogo" */ './gogo')
 );
-const SecondMenu = React.lazy(() =>
-  import(/* webpackChunkName: "viwes-second-menu" */ './second-menu')
+const Transaction = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-second-menu" */ './transaction')
 );
-const BlankPage = React.lazy(() =>
-  import(/* webpackChunkName: "viwes-blank-page" */ './blank-page')
+const Loan = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './loan')
 );
+
+const Transactions = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './transactions')
+);
+
+const Loans = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './loans')
+);
+
+const Support = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './support')
+);
+
+const Account = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './account')
+);
+
 
 class App extends Component {
   render() {
@@ -29,12 +46,28 @@ class App extends Component {
                 render={props => <Gogo {...props} />}
               />
               <Route
-                path={`${match.url}/second-menu`}
-                render={props => <SecondMenu {...props} />}
+                path={`${match.url}/transaction`}
+                render={props => <Transaction {...props} />}
               />
               <Route
-                path={`${match.url}/blank-page`}
-                render={props => <BlankPage {...props} />}
+                path={`${match.url}/loan`}
+                render={props => <Loan {...props} />}
+              />
+              <Route
+                path={`${match.url}/transactions`}
+                render={props => <Transactions {...props} />}
+              />
+              <Route
+                path={`${match.url}/loans`}
+                render={props => <Loans {...props} />}
+              />
+              <Route
+                path={`${match.url}/support`}
+                render={props => <Support {...props} />}
+              />
+              <Route
+                path={`${match.url}/account`}
+                render={props => <Account {...props} />}
               />
               <Redirect to="/error" />
             </Switch>

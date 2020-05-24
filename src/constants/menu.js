@@ -4,9 +4,9 @@ const data = [
     // icon: "iconsminds-air-balloon-1",
     // label: "menu.gogo",
     // to: "/app/gogo",
-    id: "user",
-    icon: "iconsminds-user",
-    label: "User",
+    id: "dashboard",
+    icon: "simple-icon-briefcase",
+    label: "Dashboard",
     to: "/app/gogo",
     //   subs: [
     //    {
@@ -21,10 +21,10 @@ const data = [
     // icon: "iconsminds-three-arrow-fork",
     // label: "menu.second-menu",
     // to: "/app/second-menu",
-    id: "secondmenu",
-    icon: "iconsminds-three-arrow-fork",
-    label: "menu.second-menu",
-    to: "/app/second-menu",
+    id: "transaction",
+    icon: "simple-icon-paper-plane",
+    label: "menu.transaction",
+    to: "/app/transaction",
     // subs: [
     //   {
     //     icon: "simple-icon-paper-plane",
@@ -34,10 +34,10 @@ const data = [
     // ]
   },
   {
-    id: "blankpage",
-    icon: "iconsminds-bucket",
-    label: "menu.blank-page",
-    to: "/app/blank-page"
+    id: "loan",
+    icon: "iconsminds-basket-coins",
+    label: "menu.loan",
+    to: "/app/loan"
   },
   // {
   //   id: "docs",
@@ -46,5 +46,19 @@ const data = [
   //   to: "https://gogo-react-docs.coloredstrategies.com/",
   //   newWindow:true
   // }
+
+  {
+    id: "transactions",
+    icon: "simple-icon-credit-card",
+    label: "menu.transactions",
+    to: "/app/transactions"
+  },
+
+  {
+    id: "loans",
+    icon: "simple-icon-notebook",
+    label: "menu.loans",
+    to: "/app/loans"
+  },
 ];
 export default data;

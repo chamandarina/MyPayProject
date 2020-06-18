@@ -9,7 +9,7 @@ export class ReportingService {
     this.authService = new AuthService();
 
     this.instance = axios.create({
-      baseURL: 'http://localhost:54176/api/',
+      baseURL: 'https://mypay-reporting.azurewebsites.net/api/',
       headers: { 'Content-Type': 'application/json' }
     });
 

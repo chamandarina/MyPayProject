@@ -37,7 +37,7 @@ const loginWithEmailPasswordAsync = async (email, password) =>
 
 
 const postCall = async (data) => {
-    const response = await fetch('http://localhost:5000/api/auth', {
+    const response = await fetch('https://mypay-identity-provider.azurewebsites.net/api/auth', {
         method: 'POST',
         headers: {
           'Access-Control-Allow-Origin': 'http://localhost:3000',

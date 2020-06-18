@@ -78,7 +78,7 @@ isUserLoggedIn() {
   }
 
   async signInWithUsernameAndPassword(username, password) {
-    return await axios.post('http://localhost:5000/api/authentication', {
+    return await axios.post('https://mypay-identity-provider.azurewebsites.net/api/authentication', {
       username: username,
       password: password,
       returnUrl: 'http://localhost:3000/'

@@ -9,7 +9,7 @@ export class NotificationService {
     this.authService = new AuthService();
 
     this.instance = axios.create({
-      baseURL: 'http://localhost:53993/api/',
+      baseURL: 'https://mypay-notification.azurewebsites.net/api/',
       headers: { 'Content-Type': 'application/json' }
       });
 

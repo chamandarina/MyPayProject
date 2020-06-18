@@ -23,7 +23,7 @@ export const firebaseConfig = {
 };
 
 export const identityServerConfig = {
-  stsAuthority: 'http://localhost:5000', //'https://mypay-identityserver.azurewebsites.net',
+  stsAuthority: 'https://mypay-identity-provider.azurewebsites.net', //'https://mypay-identityserver.azurewebsites.net',
   clientId: 'spa',
   clientName: 'My-Spa-App',
   clientRoot: 'http://localhost:3000',  //'https://react-demoapp.azurewebsites.net/',

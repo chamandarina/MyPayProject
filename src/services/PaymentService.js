@@ -9,7 +9,7 @@ export class PaymentService {
     this.authService = new AuthService();
 
     this.instance = axios.create({
-      baseURL: 'https://mypay-payment.azurewebsites.net/api/',
+      baseURL: 'http://localhost:51911/api/',
       headers: { 'Content-Type': 'application/json' }
     });
 

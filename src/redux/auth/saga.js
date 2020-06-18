@@ -40,7 +40,7 @@ const postCall = async (data) => {
     const response = await fetch('https://mypay-identity-provider.azurewebsites.net/api/auth', {
         method: 'POST',
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Access-Control-Allow-Origin': 'https://mypay-application.azurewebsites.net/',
         //   'Access-Control-Allow-Credentials': true,
         //   'Access-Control-Allow-Headers': '*',
           'Content-Type': 'application/json',

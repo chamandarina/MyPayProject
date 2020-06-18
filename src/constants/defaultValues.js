@@ -26,7 +26,7 @@ export const identityServerConfig = {
   stsAuthority: 'https://mypay-identity-provider.azurewebsites.net', //'https://mypay-identityserver.azurewebsites.net',
   clientId: 'spa',
   clientName: 'My-Spa-App',
-  clientRoot: 'http://localhost:3000',  //'https://react-demoapp.azurewebsites.net/',
+  clientRoot: 'https://mypay-application.azurewebsites.net/',  //'https://react-demoapp.azurewebsites.net/',
   clientScope: 'openid profile offline_access api',
   clientSecret: 'secret',
   apiRoot: 'https://values-api.azurewebsites.net/api/'

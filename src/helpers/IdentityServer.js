@@ -81,7 +81,7 @@ isUserLoggedIn() {
     return await axios.post('https://mypay-identity-provider.azurewebsites.net/api/authentication', {
       username: username,
       password: password,
-      returnUrl: 'http://localhost:3000/'
+      returnUrl: 'https://mypay-application.azurewebsites.net/'
     });
   }
 
@@ -128,6 +128,6 @@ isUserLoggedIn() {
 
   logout() {
     this.user = false;
-    return this.userManager.signoutRedirect({post_logout_redirect_uri: "http://localhost:3000"});
+    return this.userManager.signoutRedirect({post_logout_redirect_uri: "https://mypay-application.azurewebsites.net/"});
   }
 }
